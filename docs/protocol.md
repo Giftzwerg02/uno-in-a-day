@@ -90,7 +90,7 @@ the messages are send in `JSON` format over Websocket connections, which are est
 > **Direction:** Server to Client  
 > **Example:** `{type: "update_current_user", name: "Franz"}`
 
-Packet `disconnect_user:
+#### Packet `disconnect_user`:
 
 > Removes the given user. Send to all clients.
 > **Direction:** Server to Client
