@@ -59,6 +59,21 @@
     background: green;
 }
 #user_hand_sector{
+    display: flex;
+    flex-direction: row;
+}
+
+.card {
+
+    transition: 0.5s;
+    display: inline-block;
+    height: 200px;
+
+}
+
+.card:hover {
+
+    transform: scale(1.2) translateY(-50px);
 
 }
 
