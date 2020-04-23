@@ -9,7 +9,7 @@ class Server {
 	private $clients;
 	private $handlers;
 	
-	public function _construct(){
+	public function __construct(){
 		$this->server = new \HemiFrame\Lib\WebSocket\WebSocket("localhost", 1337);
 		
 		$this->server->on("receive", onReceive);

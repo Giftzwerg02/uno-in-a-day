@@ -110,7 +110,7 @@ class Protocol {
 
     constructor() {
         this.domain = window.location.hostname;
-        this.connection = new WebSocket(`ws://${this.domain}:1337/backend/protocol.php`, []);
+        this.connection = new WebSocket(`ws://${this.domain}:1337`, []);
 
         const protocol = this;
         this.connection.onerror = function (error) {
