@@ -5,7 +5,7 @@
 Each card has an ID in the form:
 
 ```
-<card_name>:<color>
+<color>/<card_name>
 ```
 
 where `<card_name>` is one of:
@@ -25,7 +25,7 @@ where the only cards allowed to be `black` are `plus_four` and `color_change`. T
 e.g.
 
 ```
-one:red plus_four:black nine:block
+red/one black/plus_four yellow/block
 ```
 
 
@@ -68,13 +68,13 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 > Gives a new card to the user. Includes the card ID (see above).
 > **Direction:** Server to Client
-> **Example:** `{type: "respond_card", card: "one:blue"}`
+> **Example:** `{type: "respond_card", card: "blue/one"}`
 
 #### Packet `push_card`
 
 > Pushes a new card on the card stack. Includes the pushed card ID (see above).
 > **Direction:** Client to Server
-> **Example:** `{type: "push_card", card: "plus_two:red"}`
+> **Example:** `{type: "push_card", card: "red/plus_two"}`
 
 ### Update-Related messages
 
@@ -90,6 +90,12 @@ the messages are send in `JSON` format over Websocket connections, which are est
 > **Direction:** Server to Client
 > **Example:** `{type: "update_current_user", name: "Franz"}`
 
+Packet `disconnect_user:
+
+> Removes the given user. Send to all clients.
+> **Direction:** Server to Client
+> **Example:** `{type: "disconnect_user", name: "Hans"}`
+
 #### Packet `end_turn`
 
 > End the turn for the player.
@@ -100,7 +106,7 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 > Updates the TOS (Top-of-Stack), e.g. the last card that was laid. Includes the card ID (see above).
 > **Direction:** Server to Client
-> **Example:** `{type: "update_tos", card: "plus_four:black"}`
+> **Example:** `{type: "update_tos", card: "black/plus_four"}`
 
 #### UNO!-Related Messages
 
