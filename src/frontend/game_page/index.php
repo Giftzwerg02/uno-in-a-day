@@ -1,5 +1,5 @@
 <?php
-    require ../../backend/protocol.php
+    #require "../../backend/protocol.php";
     session_start();
 
 if (!isset($_SESSION['visited'])) {
@@ -20,15 +20,17 @@ if (!isset($_SESSION['visited'])) {
 </head>
 <body>
 <?php
-$users = 9;
+
 ?>
 <div class="container" id="main">
     <div class="sector" id="sector_left">
 
             <?php
-                for ($i=0; $i < $users; $i++){
+            $userArray = ['Johannes', 'Nick', 'Nikita', 'Hans', 'Benjamin', 'Patrick', 'Gustav'];
+            #$userArray = getClients();
+                for ($i=0; $i < count($userArray); $i++){
                     echo "<div class='sub_sector sub_sector_user' id='user_sector'>";
-                    echo "<p class='username'>Benjamin</p>";
+                    echo "<p class='username'>$userArray[$i]</p>";
                     echo "<p class='card_count'>Karten: 2</p>";
                     echo "</div>";
                 }

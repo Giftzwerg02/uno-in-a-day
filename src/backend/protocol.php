@@ -69,6 +69,7 @@ class Server {
 	}
 	
 	public function getClients(){
+	    //wenn ein Array geliefert wird: ok sonst in frontend/index.php ändern oder Patrick bescheidgeben
 		return $clients;
 	}
 	
