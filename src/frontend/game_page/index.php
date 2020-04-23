@@ -1,5 +1,6 @@
 <?php
-session_start();
+    require ../../backend/protocol.php
+    session_start();
 
 if (!isset($_SESSION['visited'])) {
     # echo "Du hast diese Seite noch nicht besucht";
