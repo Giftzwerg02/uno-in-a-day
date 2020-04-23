@@ -1,4 +1,72 @@
 body{
   margin:0;
   padding:0;
+  height: 100%;
+  background: rgb(130,130,130);
+}
+
+html{
+  height: 100vh;
+}
+
+ul{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 70%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  align-items: center;
+  font-family:sans-serif;
+  color: yellow;
+}
+nav{
+  background: rgb(40,40,40);
+  display: flex;
+  flex-direction: row;
+  height: 10%;
+  justify-content: space-between;
+}
+
+#logo{
+  padding-left: 1%;
+  padding-top: 1%;
+  width: 6%;
+}
+section{
+  display: flex;
+  height: 80%;
+  justify-content: center;
+  align-items: center;
+}
+
+#playBtn{
+  animation-name: outBtn;
+  animation-duration: 0.3s;
+  color:yellow;
+  background: rgb(40,40,40);
+  border: 2px solid yellow;
+  border-radius: 10px;
+  padding: 30px;
+}
+#playBtn:hover{
+  color:yellow;
+  animation-name: hoverBtn;
+  animation-duration: 0.3s;
+  background: rgb(80,80,80);
+  border: 2px solid yellow;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+
+
+@keyframes hoverBtn {
+    from{background: rgb(40,40,40);}
+    to{background: rgb(80,80,80);}
+}
+@keyframes outBtn {
+  from{background: rgb(80,80,80);}
+  to{background: rgb(40,40,40);}
 }
