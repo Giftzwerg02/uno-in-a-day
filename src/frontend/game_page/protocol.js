@@ -1,15 +1,6 @@
 class Protocol {
     domain;
     connection;
-    
-    constructor() {
-        this.domain = window.location.hostname;
-        this.connection = new WebSocket(`ws://${this.domain}/backend/protocol.php`, []);
-
-        this.connection.onerror = function (error) {
-            sendEvent('error');
-        };
-    }
 
     //---------------------------
     // Methods
@@ -21,7 +12,9 @@ class Protocol {
 
     //---------------------------
     // Events
-    // error
+    // Example:
+    // protocolObject.events.on('error', yourFunction);
+    // Events: error
     //---------------------------
     events = new function() {
         var _triggers = {};
@@ -43,5 +36,15 @@ class Protocol {
 
     sendEvent(eventText) {
         this.events.triggerHandler(eventText);
+    }
+
+
+    constructor() {
+        this.domain = window.location.hostname;
+        this.connection = new WebSocket(`ws://${this.domain}/backend/protocol.php`, []);
+
+        this.connection.onerror = function (error) {
+            this.sendEvent('error');
+        };
     }
 }
