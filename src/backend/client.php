@@ -6,21 +6,21 @@ class Client {
 	private $cards;
 	
 	public function __construct($socket, $name){
-		$this->client = $client;
+		$this->socket = $socket;
 		$this->name = $name;
 		$this->cards = [];
 	}
 	
 	public function getCards(){
-		return $cards;
+		return $this->cards;
 	}
 	
 	public function getName(){
-		return $name;
+		return $this->name;
 	}
 	
 	public function getSocket(){
-		return $client;
+		return $this->socket;
 	}
 }
 

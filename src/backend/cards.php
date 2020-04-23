@@ -7,10 +7,20 @@ class Cards {
     private $black_card_color = "black";
     private $black_card_names = ["plus_four", "color_change"];
     private $card_ids = [];
+	
+	private static $instance = null;
 
     function __construct() {
         $this->generateCards();
     }
+	
+	public static function getInstance(){
+		if (self::$instance == null) {
+			self::$instance = new Cards();
+		}
+ 
+		return self::$instance;
+	}
 
     private function generateCards() {
 
@@ -48,6 +58,9 @@ class Cards {
         return $this->card_ids;
     }
 
+	public function getRandomCard(){
+		return $this->card_ids[array_rand($this->card_ids)];
+	}
 }
 
 ?>
