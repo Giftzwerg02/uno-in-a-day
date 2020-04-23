@@ -16,6 +16,8 @@ ul{
   justify-content: space-around;
   width: 70%;
   padding-top: 1%;
+  padding-bottom: 1%;
+  align-items: center;
   font-family:sans-serif;
   color: yellow;
 }
