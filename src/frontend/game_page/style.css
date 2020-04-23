@@ -1,0 +1,64 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+#main{
+    display: flex;
+    flex-direction: row;
+}
+
+.sector{
+    margin: 10px;
+    height: 100%;
+    /*width: 20%;*/
+    border: dotted red;
+}
+
+#sector_left{
+    width: 20%;
+}
+
+#sector_mid{
+    width: 60%;
+}
+
+#sector_right{
+    width: 20%;
+    height: 400px;
+}
+
+.cards{
+    height: 400px;
+    border: dotted cyan;
+}
+
+.sub_sector{
+    height: 50%;
+    border: dotted blue;
+}
+
+#user_hand_sector{
+    height: 250px;
+}
+
+.sub_sector_user{
+    height:30px;
+    padding: 3px;
+    font-size: 150%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.card_count{
+    margin-right: 10px;
+}
+
+.active{
+    background: green;
+}
+#user_hand_sector{
+
+}
+

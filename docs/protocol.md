@@ -37,31 +37,31 @@ the messages are send in `JSON` format over Websocket connections, which are est
 ### General Messages
 
 #### Packet `session_init`
-> Sends a message saying "I'm here" to the server. Includes the chosen username.
-> **Direction:** Client to Server
+> Sends a message saying "I'm here" to the server. Includes the chosen username.  
+> **Direction:** Client to Server  
 > **Example:** `{type: "session_init", name: "Kevin"}`
 
 #### Packet `error`
-> Generic error message. The server closes the connection after this message has been send.
-> **Direction:** Server to Client
+> Generic error message. The server closes the connection after this message has been send.  
+> **Direction:** Server to Client  
 > **Example:** `{type: "error", message: "Username Taken"}`
 
 #### Packet `game_start`
-> Notifies all players that the game has started. Includes all player names (except yourself) in their sitting arrangement seen from you (e.g. the guy on your right is the first one in the array, the guys on your left the last one). 
-> **Direction:** Server to Client
+> Notifies all players that the game has started. Includes all player names (except yourself) in their sitting arrangement seen from you (e.g. the guy on your right is the first one in the array, the guys on your left the last one).  
+> **Direction:** Server to Client  
 > **Example:** `{type: "game_start", players: ["hans", "franz"], start_player: "franz"}`
 
 #### Packet `game_end`
-> Ends the game, saying which player won.
-> **Direction:** Server to Client
+> Ends the game, saying which player won.  
+> **Direction:** Server to Client  
 > **Example**: `{type: "game_end", winner: "hans"}`
 
 ### Card-Related Messages
 
 #### Packet `request_card`
 
-> Requests a new card. Responded to with `give_card`.
-> **Direction:** Client to Server
+> Requests a new card. Responded to with `give_card`.  
+> **Direction:** Client to Server  
 > **Example:** `{type: "request_card"}`
 
 #### Packet `give_card`
@@ -80,14 +80,14 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 #### Packet `update_user`
 
-> Updates a users state on the client. Includes the amount of cards.
-> **Direction:** Server to Client
+> Updates a users state on the client. Includes the amount of cards.  
+> **Direction:** Server to Client  
 > **Example:** `{type: "update_user", cards: 5}`
 
 #### Packet `update_current_user`
 
-> Updates the currently active user. Send to all clients.
-> **Direction:** Server to Client
+> Updates the currently active user. Send to all clients.  
+> **Direction:** Server to Client  
 > **Example:** `{type: "update_current_user", name: "Franz"}`
 
 Packet `disconnect_user:
@@ -98,8 +98,8 @@ Packet `disconnect_user:
 
 #### Packet `end_turn`
 
-> End the turn for the player.
-> **Direction:** Client to Server
+> End the turn for the player.  
+> **Direction:** Client to Server  
 > **Example:** `{type: "end_turn"}`
 
 #### Packet `updates_tos`
@@ -112,14 +112,14 @@ Packet `disconnect_user:
 
 #### Packet `uno`
 
-> Same as saying "UNO!" in the "real" game, one is saved from taking two cards.
-> **Direction:** Client to Server
+> Same as saying "UNO!" in the "real" game, one is saved from taking two cards.  
+> **Direction:** Client to Server  
 > **Example:** `{type: "uno"}`
 
 #### Packet `no_u`
 
-> Reports the last player for not saying "UNO!".
-> **Direction:** Client to Server
+> Reports the last player for not saying "UNO!".  
+> **Direction:** Client to Server  
 > **Example:** `{type: "no_u"}`
 
 ## Protocol Diagram
