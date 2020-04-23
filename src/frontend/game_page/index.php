@@ -44,12 +44,14 @@ if (!isset($_SESSION['visited'])) {
         <div class="sub_sector" id="stack_sector">
             <div class="cards" id="stack">
                 Hier Ablagestapel einfügen
-                <img id="tos" src=""/>
+                <img id="tos" class="card" src=""/>
             </div>
         </div>
         <div class="sub_sector" id="user_hand_sector">
             Spielerhand mit Karten
-            <?php require "user_hand.php"?>
+            <div id="user_hand">
+
+            </div>
         </div>
     </div>
     <div class="sector" id="sector_right">
