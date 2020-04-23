@@ -1,7 +1,7 @@
 <?php
 
-require_once('vendor/HemiFrame/Lib/WebSockets.php');
-require_once('user.php');
+require_once('..\vendor\HemiFrame\Lib\WebSockets\WebSocket.php');
+require_once('client.php');
 
 class Server {
 	
@@ -9,11 +9,11 @@ class Server {
 	private $clients;
 	private $handlers;
 	
-	public function _construct(){
+	public function __construct(){
 		$this->server = new \HemiFrame\Lib\WebSocket\WebSocket("localhost", 1337);
 		
-		$this->server->on("receive", onReceive)
-		$this->server->on("disconnect", onDisconnect)
+		$this->server->on("receive", onReceive);
+		$this->server->on("disconnect", onDisconnect);
 	}
 	
 	public function sendError($user, $error){
@@ -21,7 +21,8 @@ class Server {
 	}
 	
 	public function startGame($first_card){
-		$names = []
+		$names = [];
+		
 		foreach($this->clients as $client){
 			$names[] = $client->getName();
 		}
@@ -54,7 +55,7 @@ class Server {
 	
 	public function updateCurrentUser($user){
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "update_current_user", ["name" => $user])
+			$this->sendDirect($client, "update_current_user", ["name" => $user]);
 		}
 	}
 	
@@ -65,7 +66,7 @@ class Server {
 		unset($this->clients[$index]);
 		
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "disconnect_user", ["name" => $user])
+			$this->sendDirect($client, "disconnect_user", ["name" => $user]);
 		}
 	}
 

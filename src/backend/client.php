@@ -5,7 +5,7 @@ class Client {
 	private $name;
 	private $cards;
 	
-	public function _construct($socket, $name){
+	public function __construct($socket, $name){
 		$this->client = $client;
 		$this->name = $name;
 		$this->cards = [];
