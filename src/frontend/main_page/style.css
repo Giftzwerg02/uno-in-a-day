@@ -36,9 +36,14 @@ nav{
 }
 section{
   display: flex;
+  flex-direction: column;
   height: 80%;
   justify-content: center;
   align-items: center;
+}
+
+#titleImg{
+  height: 40%;
 }
 
 #playBtn{
