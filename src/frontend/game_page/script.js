@@ -45,8 +45,6 @@ $.getScript('./protocol.js', function() {
         return `<img id="${id}" class='card' src='../img_cards/${card}.png'/>`;
     }
 
-    protocol.events.triggerHandler("give_card", "green/nine");
-
     function getCardIdFromImg(img) {
         return img.src.split("img_cards/")[1].split(".png")[0];
     }
