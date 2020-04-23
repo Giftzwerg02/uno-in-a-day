@@ -47,9 +47,9 @@ the messages are send in `JSON` format over Websocket connections, which are est
 > **Example:** `{type: "error", message: "Username Taken"}`
 
 #### Packet `game_start`
-> Notifies all players that the game has started. Includes all player names (except yourself) in their sitting arrangement seen from you (e.g. the guy on your right is the first one in the array, the guys on your left the last one).  
+> Notifies all players that the game has started. Includes all player names (except yourself) in their sitting arrangement seen from you (e.g. the guy on your right is the first one in the array, the guys on your left the last one). As well as the first card on the stack.   
 > **Direction:** Server to Client  
-> **Example:** `{type: "game_start", players: ["hans", "franz"], start_player: "franz"}`
+> **Example:** `{type: "game_start", names: ["hans", "franz"], first_card: "red/three"}`
 
 #### Packet `game_end`
 > Ends the game, saying which player won.  
@@ -68,7 +68,7 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 > Gives a new card to the user. Includes the card ID (see above).
 > **Direction:** Server to Client
-> **Example:** `{type: "respond_card", card: "blue/one"}`
+> **Example:** `{type: "give_card", card: "blue/one"}`
 
 #### Packet `push_card`
 
@@ -82,7 +82,7 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 > Updates a users state on the client. Includes the amount of cards.  
 > **Direction:** Server to Client  
-> **Example:** `{type: "update_user", cards: 5}`
+> **Example:** `{type: "update_user", name: "Hans", cards: 5}`
 
 #### Packet `update_current_user`
 
@@ -102,7 +102,7 @@ the messages are send in `JSON` format over Websocket connections, which are est
 > **Direction:** Client to Server  
 > **Example:** `{type: "end_turn"}`
 
-#### Packet `updates_tos`
+#### Packet `update_tos`
 
 > Updates the TOS (Top-of-Stack), e.g. the last card that was laid. Includes the card ID (see above).
 > **Direction:** Server to Client

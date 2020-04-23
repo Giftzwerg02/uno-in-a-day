@@ -14,6 +14,7 @@ if (!isset($_SESSION['visited'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../../recourses/jquery-3.5.0.min.js" defer></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <title>Uno with your Friends</title>
@@ -31,6 +32,7 @@ if (!isset($_SESSION['visited'])) {
                 for ($i=0; $i < count($userArray); $i++){
                     echo "<div class='sub_sector sub_sector_user' id='user_sector'>";
                     echo "<p class='username'>$userArray[$i]</p>";
+                    #echo "<p class='username'>$userArray[$i]->getName()</p>";
                     echo "<p class='card_count'>Karten: 2</p>";
                     echo "</div>";
                 }
@@ -47,6 +49,7 @@ if (!isset($_SESSION['visited'])) {
         </div>
         <div class="sub_sector" id="user_hand_sector">
             Spielerhand mit Karten
+            <?php require "user_hand.php"?>
         </div>
     </div>
     <div class="sector" id="sector_right">
