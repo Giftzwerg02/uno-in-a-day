@@ -32,7 +32,7 @@ if (!isset($_SESSION['visited'])) {
                 for ($i=0; $i < count($userArray); $i++){
                     echo "<div class='sub_sector sub_sector_user' id='user_sector'>";
                     echo "<p class='username'>$userArray[$i]</p>";
-                    #echo "<p class='username'>$userArray[$i]->getName()</p>";
+                    #echo "<p class='username'>$userArray[$i].getName()</p>";
                     echo "<p class='card_count'>Karten: 2</p>";
                     echo "</div>";
                 }
@@ -44,8 +44,8 @@ if (!isset($_SESSION['visited'])) {
         <div class="sub_sector" id="stack_sector">
             <div class="cards" id="stack">
                 Hier Ablagestapel einfügen
+                <img id="tos" src=""/>
             </div>
-
         </div>
         <div class="sub_sector" id="user_hand_sector">
             Spielerhand mit Karten
