@@ -59,8 +59,35 @@ class Cards {
     }
 
 	public function getRandomCard(){
-		return $this->card_ids[array_rand($this->card_ids)];
+		return $this->randomElem($this->card_ids);
 	}
+
+	public function getRandomStartingCard(){
+        $arr = $this->card_ids;
+        for ($i = 0; $i < count($arr); $i++){
+            if(
+                $this->endsWith($arr[$i], 'block') ||
+                $this->endsWith($arr[$i], 'switch') ||
+                $this->endsWith($arr[$i], 'plus_two') ||
+                $this->endsWith($arr[$i], 'plus_four') ||
+                $this->endsWith($arr[$i], 'color_change')
+            ){
+                unset($arr[$i]);
+            }
+        }
+
+        return $this->randomElem($arr);
+    }
+
+
+    // https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+    private function endsWith($haystack, $needle) {
+        return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+    }
+
+    public function randomElem($arr){
+        return $arr[array_rand($arr)];
+    }
 }
 
 ?>
