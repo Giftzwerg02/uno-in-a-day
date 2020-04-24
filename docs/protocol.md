@@ -104,9 +104,9 @@ the messages are send in `JSON` format over Websocket connections, which are est
 
 #### Packet `update_tos`
 
-> Updates the TOS (Top-of-Stack), e.g. the last card that was laid. Includes the card ID (see above).
+> Updates the TOS (Top-of-Stack), e.g. the last card that was laid. Includes the card ID (see above) and if the card was already consumed be the previous player (`block`, `plus_two` and `plus_four` only ).
 > **Direction:** Server to Client
-> **Example:** `{type: "update_tos", card: "black/plus_four"}`
+> **Example:** `{type: "update_tos", card: "black/plus_four", consumed: false}`
 
 #### UNO!-Related Messages
 

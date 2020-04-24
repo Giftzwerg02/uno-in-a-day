@@ -32,7 +32,7 @@ class Protocol {
         },
 
         "update_tos": (data) => {
-            return [data['card']];
+            return [data['card'], data['consumed']];
         },
 
         "error": (data) => {

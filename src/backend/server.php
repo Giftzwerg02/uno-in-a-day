@@ -8,6 +8,7 @@ class Server {
 	private $clients;
 	private $handlers;
 	private $tos;
+	private $tos_consumed;
 	private $direction;
 	private $card_accum;
 	
@@ -30,6 +31,7 @@ class Server {
 		
 		$this->clients = [];
 		$this->direction = 'right';
+		$this->tos_consumed = true;
 		$this->resetCardAccum();
 	}
 	
@@ -119,7 +121,7 @@ class Server {
 
 	public function updateTOS(){
 		foreach($this->clients as $client){
-			$this->send($client, "update_tos", ["card" => $this->tos]);
+			$this->send($client, "update_tos", ["card" => $this->tos, "consumed" => $this->tos_consumed]);
 		}
 	}
 	
@@ -180,6 +182,14 @@ class Server {
 	    $this->tos = $tos;
     }
 
+    public function getTOSConsumed(){
+	    return $this->tos;
+    }
+
+    public function setTOSConsumed($tos){
+	    $this->tos = $tos;
+    }
+
     public function switchDirection(){
 	    if($this->direction == 'right'){
 	        $this->direction = 'left';
@@ -227,7 +237,7 @@ class Server {
 		$arr = json_decode($data, true);
 		$client = $this->getClientBySocket($socket);
 		
-		// Small ugly hack for init_session
+		// Small ugly hack for session_init
 		if($arr['type'] == 'session_init'){
 			$client = $socket;
 		}

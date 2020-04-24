@@ -54,9 +54,11 @@ class ProtocolAdapter {
 			        break;
                 case "plus_two":
                     $server->increaseCardAccum(2);
+                    $server->setTOSConsumed(false);
                     break;
                 case "plus_four":
                     $server->increaseCardAccum(4);
+                    $server->setTOSConsumed(false);
                     break;
             }
 		});
@@ -65,6 +67,7 @@ class ProtocolAdapter {
 		    $server->updateUser($client);
 		    $server->updateTOS();
 		    $server->updateToNextUser();
+		    $server->setTOSConsumed(true);
 		});
 		
 		$server->onUno(function ($client) use ($server){
