@@ -1,22 +1,31 @@
 "use strict";
+/**
+ * For further explanaition: https://www.youtube.com/watch?v=V1bFr2SWP1I
+ */
 $.getScript('./protocol.js', function() {
 
     var protocol = new Protocol();
     var current_player;
-
+    var hasChosenCard = false;
+    var hasTakenCard = false;
     const userHand = document.getElementById("user_hand");
     const tos = document.getElementById("tos");
     let colorButtons = Array.from(document.getElementsByClassName("color"));
     colorButtons.forEach(button => button.addEventListener("click", chooseColor));
     const deckCard = document.getElementById("deck_card");
     deckCard.addEventListener("click", function() {
-        if(current_player == protocol.own_player_name){
+        if(!hasTakenCard && current_player == protocol.own_player_name){
+            hasTakenCard = true;
             protocol.requestCard();
+            updateBlur();
         }
     });
     const endTurnBtn = document.getElementById("end");
     endTurnBtn.addEventListener("click", function () {
-        if(!$("#end").prop("disabled")) { // only pressable if it is your turn!
+        if(current_player == protocol.own_player_name) { // only pressable if it is your turn!
+            hasChosenCard = false;
+            hasTakenCard = false;
+            updateBlur();
             protocol.endTurn();
         }
     });
@@ -66,7 +75,12 @@ $.getScript('./protocol.js', function() {
             $(img).removeClass("card:hover").addClass("nofit");
         }
         userHand.appendChild(img);
-        img.addEventListener("click", removeCardFromPlayer);
+        img.addEventListener("click", function(event) {
+            console.log("hasChosenCard: " + hasChosenCard)
+            if(!hasChosenCard && current_player == protocol.own_player_name){
+                removeCardFromPlayer(event);
+            }
+        });
     }
 
     // this gets executed when a player wants to place a card
@@ -77,21 +91,21 @@ $.getScript('./protocol.js', function() {
         if(!cardFitsOnTos(cardId)) {
             return;
         }
-
+        hasChosenCard = true;
         for (const child in userHand.children) {
             let childTag = userHand.children.item(child);
             if(childTag === cardHtml) {
-                                
                 let cardName = cardId.split("/")[1];
                 if(cardName === "plus_four" || cardName === "color_change") {
-                    generateColorChoice();
+                    generateColorChoice()
+                    addCardToTos(cardId);
                     Array.from(userHand.children).forEach(cardImg => {
                         $(cardImg).addClass("nofit").removeClass("card:hover");
                     });
-                    tos.src = cardToSrc(cardId);
                     userHand.removeChild(childTag);
                 } else {
                     protocol.pushCard(cardId);
+                    addCardToTos(cardId);
                     userHand.removeChild(childTag);
                     break;
                 }
@@ -110,6 +124,7 @@ $.getScript('./protocol.js', function() {
         let chosenColor = color;
         let cardId = getCardIdFromImg(tos);
         cardId = chosenColor + "/" + cardId.split("/")[1];
+        addCardToTos(cardId);
         protocol.pushCard(cardId);
         colorButtons.forEach(button => {
             button.hidden = true;
@@ -155,11 +170,17 @@ $.getScript('./protocol.js', function() {
     function updateBlur(){
         let own_turn = current_player == protocol.own_player_name;
         Array.from(userHand.children).forEach(cardImg => {
-            if(cardFitsOnTos(getCardIdFromImg(cardImg)) && own_turn) {
+            if(cardFitsOnTos(getCardIdFromImg(cardImg)) && own_turn && !hasChosenCard) {
                 $(cardImg).removeClass("nofit").addClass("card:hover");
             } else {
                 $(cardImg).addClass("nofit").removeClass("card:hover");
             }
         });
+
+        if(hasTakenCard || !own_turn) {
+            $(deckCard).addClass("nofit").removeClass("card:hover");
+        } else {
+            $(deckCard).removeClass("nofit").addClass("card:hover");
+        }
     }
 });
