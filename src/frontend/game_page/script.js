@@ -82,7 +82,6 @@ $.getScript('./protocol.js', function() {
         let cardId = getCardIdFromImg(tos);
         cardId = chosenColor + "/" + cardId.split("/")[1];
         protocol.pushCard(cardId);
-        protocol.events.triggerHandler("update_tos", cardId);
         colorButtons.forEach(button => {
             button.hidden = true;
         });
@@ -147,12 +146,5 @@ $.getScript('./protocol.js', function() {
         return (cardComponents.color === tosComponents.color || cardComponents.name === tosComponents.name || cardComponents.color === "black") && tosComponents.color !== "black";
 
     }
-
-    /*protocol.events.triggerHandler("update_tos", ["blue/four"]);
-    protocol.events.triggerHandler("give_card", ["blue/three"]);
-    protocol.events.triggerHandler("give_card", ["red/three"]);
-    protocol.events.triggerHandler("give_card", ["black/plus_four"]);
-    protocol.events.triggerHandler("give_card", ["green/nine"]);
-    protocol.events.triggerHandler("give_card", ["black/color_change"]);*/
 
 });
