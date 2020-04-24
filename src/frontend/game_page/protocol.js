@@ -94,8 +94,10 @@ class Protocol {
         this.triggerHandler = function(event,params) {
             if( _triggers[event] ) {
                 var i;
-                for( i in _triggers[event] )
+                for( i in _triggers[event] ) {
+                    console.log(params);
                     _triggers[event][i](...params);
+                }
             }
         }
     };
