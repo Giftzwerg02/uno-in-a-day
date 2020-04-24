@@ -86,3 +86,42 @@
 .nofit {
     filter: blur(5px) brightness(0.4);
 }
+
+.color {
+    border: 3 px solid black;
+    height: 50px;
+    width: 100px;
+    transition: 0.5s;
+}
+
+.color:hover {
+    transform: scale(1.1) translateY(-10px);
+}
+
+#red {
+    background-color: red;
+}
+
+#green {
+    background-color: green;
+
+}
+
+#blue {
+    background-color: blue;
+
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#color_choice {
+    height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+}

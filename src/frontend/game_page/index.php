@@ -14,7 +14,7 @@ if (!isset($_SESSION['visited'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../../../recourses/jquery-3.5.0.min.js" defer></script>
+    <script src="../../jquery-3.5.0.min.js" defer></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <title>Uno with your Friends</title>
@@ -53,6 +53,16 @@ if (!isset($_SESSION['visited'])) {
 
             </div>
         </div>
+
+        <div class="sub_sector" id="color_choice">
+            
+            <div id="red" class="color" hidden></div>
+            <div id="green" class="color" hidden></div>
+            <div id="blue" class="color" hidden></div>
+            <div id="yellow" class="color" hidden></div>
+
+        </div>
+        
     </div>
     <div class="sector" id="sector_right">
         <div class="cards" id="deck">

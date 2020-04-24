@@ -3,7 +3,7 @@
 class Cards {
 
     private $colored_card_colors = ["red", "blue", "green", "yellow"];
-    private $colored_card_names = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "blocked", "switch", "plus_two"];
+    private $colored_card_names = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "block", "switch", "plus_two"];
     private $black_card_color = "black";
     private $black_card_names = ["plus_four", "color_change"];
     private $card_ids = [];
@@ -27,6 +27,9 @@ class Cards {
         // ADDING COLOR-CARDS
         for ($color=0; $color < count($this->colored_card_colors); $color++) { 
                 
+            $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->black_card_names[0];
+            $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->black_card_names[1];
+
             for ($name=0; $name < count($this->colored_card_names); $name++) { 
                 
                 $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->colored_card_names[$name];
