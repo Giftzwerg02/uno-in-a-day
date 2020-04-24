@@ -3,6 +3,43 @@ class Protocol {
     connection;
 
     //---------------------------
+    // Event Preprocessors
+    //---------------------------
+    preprocessors = {
+        "game_start": (data) => {
+            return [data['names'], data['first_card']];
+        },
+
+        "game_end": (data) => {
+            return [data['winner']];
+        },
+
+        "give_card": (data) => {
+            return [data['card']];
+        },
+
+        "update_user": (data) => {
+            return [data['name'], data['cards']];
+        },
+
+        "update_current_user": (data) => {
+            return [data['name']];
+        },
+
+        "disconnect_user": (data) => {
+            return [data['name']];
+        },
+
+        "update_tos": (data) => {
+            return [data['card']];
+        },
+
+        "error": (data) => {
+            return [data['message']];
+        },
+    };
+
+    //---------------------------
     // Methods
     //---------------------------
     sessionInit(username) {
@@ -58,13 +95,13 @@ class Protocol {
             if( _triggers[event] ) {
                 var i;
                 for( i in _triggers[event] )
-                    _triggers[event][i](params);
+                    _triggers[event][i](...params);
             }
         }
     };
 
-    sendEvent(eventText) {
-        this.events.triggerHandler(eventText);
+    sendEvent(eventText, params) {
+        this.events.triggerHandler(eventText, params);
     }
 
 
@@ -73,8 +110,17 @@ class Protocol {
         this.connection = new WebSocket(`ws://${this.domain}:1337`, []);
 
         const protocol = this;
+        
         this.connection.onerror = function (error) {
-            protocol.sendEvent('error');
+            protocol.sendEvent('error', [error.message]);
         };
+        
+        this.connection.onmessage = function (event) {
+            let json = JSON.parse(event.data);
+            let type = json['type'];
+            let args = protocol.preprocessors[type](json);
+
+            protocol.sendEvent(type, args);
+        }
     }
 }
