@@ -53,6 +53,16 @@ if (!isset($_SESSION['visited'])) {
 
             </div>
         </div>
+
+        <div class="sub_sector" id="color_choice">
+            
+            <div id="red" class="color" hidden></div>
+            <div id="green" class="color" hidden></div>
+            <div id="blue" class="color" hidden></div>
+            <div id="yellow" class="color" hidden></div>
+
+        </div>
+        
     </div>
     <div class="sector" id="sector_right">
         <div class="cards" id="deck">
