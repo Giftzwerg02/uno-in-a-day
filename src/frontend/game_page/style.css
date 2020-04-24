@@ -48,7 +48,7 @@
     font-size: 150%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .card_count{
@@ -88,7 +88,7 @@
 }
 
 .color {
-    border: 3 px solid black;
+    border: 3px solid black;
     height: 50px;
     width: 100px;
     transition: 0.5s;
