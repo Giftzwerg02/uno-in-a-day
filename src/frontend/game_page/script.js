@@ -83,12 +83,3 @@ $.getScript('./protocol.js', function() {
     protocol.events.triggerHandler("give_card", "green/nine");
 
 });
-
-
-
-
-/*v
-
-cards.forEach(card => {
-    addEventListener("giveCard", refreshDeck())
-});*/

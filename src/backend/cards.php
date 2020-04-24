@@ -3,7 +3,7 @@
 class Cards {
 
     private $colored_card_colors = ["red", "blue", "green", "yellow"];
-    private $colored_card_names = ["zero", "one", "two", "three". "four", "five", "six", "seven", "eight", "nine", "blocked", "switch", "plus_two"];
+    private $colored_card_names = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "blocked", "switch", "plus_two"];
     private $black_card_color = "black";
     private $black_card_names = ["plus_four", "color_change"];
     private $card_ids = [];
