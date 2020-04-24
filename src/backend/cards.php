@@ -70,7 +70,7 @@ class Cards {
             $name = $this->getCardName($this->card_ids[$i]);
 
             if(array_search($name, $excluded) === false){
-                $arr[] = $name;
+                $arr[] = $this->card_ids[$i];
             }
         }
 
