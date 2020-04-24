@@ -22,6 +22,17 @@ class Client {
 	public function getSocket(){
 		return $this->socket;
 	}
+
+	public function giveCard($card){
+	    $this->cards[] = $card;
+    }
+
+	public function removeCard($card){
+	    $index = array_search($card, $this->cards);
+	    if($index != false){
+	        unset($this->cards[$index]);
+        }
+    }
 }
 
 ?>

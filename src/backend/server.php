@@ -1,6 +1,8 @@
 <?php
 
-require_once('..\vendor\HemiFrame\Lib\WebSockets\WebSocket.php');
+use HemiFrame\Lib\WebSocket\WebSocket;
+
+require_once('..\vendor\HemiFrame\Lib\WebSockets\WebSocket.php'); // Not sure if needed
 require_once('..\vendor\HemiFrame\Lib\WebSockets\Client.php');
 require_once('client.php');
 
@@ -9,10 +11,13 @@ class Server {
 	public $server;
 	private $clients;
 	private $handlers;
+	private $tos;
+	private $direction;
+	private $card_accum;
 	
 	public function __construct(){
         try {
-            $this->server = new \HemiFrame\Lib\WebSocket\WebSocket("0.0.0.0", 1337);
+            $this->server = new WebSocket("0.0.0.0", 1337);
         } catch (Exception $e) {
             error_log("Could not create websocket: " . $e->getMessage());
         }
@@ -26,6 +31,8 @@ class Server {
 		});
 		
 		$this->clients = [];
+		$this->direction = 'right';
+		$this->resetCardAccum();
 	}
 	
 	public function start(){
@@ -69,7 +76,7 @@ class Server {
 	}
 	
 	public function updateUser($target_client){
-		$payload = ["name" => $target_client->getCards(), "cards" => count($target_client->getCards())];
+		$payload = ["name" => $target_client->getName(), "cards" => count($target_client->getCards())];
 		
 		foreach($this->clients as $client){
 			if($client != $target_client){
@@ -79,10 +86,22 @@ class Server {
 	}
 	
 	public function updateCurrentUser($target_client){
+	    $this->clients = $this->rotateArray($this->clients, $target_client);
+
 		foreach($this->clients as $client){
 			$this->send($client, "update_current_user", ["name" => $target_client->getName()]);
 		}
 	}
+
+	public function updateToNextUser(){
+	    $rotation = 1;
+        if($this->direction == 'left'){
+            $rotation = -1;
+        }
+
+        $this->clients = $this->rotateArrayBy($this->clients, $rotation);
+        $this->updateCurrentUser($this->clients[0]);
+    }
 	
 	public function disconnectUser($target_client){
 		// Remove the client from the array
@@ -98,9 +117,9 @@ class Server {
         $this->server->disconnectClient($socket);
     }
 
-	public function updateTOS($card){
+	public function updateTOS(){
 		foreach($this->clients as $client){
-			$this->send($client, "update_tos", ["card" => $card]);
+			$this->send($client, "update_tos", ["card" => $this->tos]);
 		}
 	}
 	
@@ -117,7 +136,7 @@ class Server {
 	}
 	
 	public function onPushCard($callback){
-		$handlers['push_card'] = function($client, $data) use ($callback){
+        $this->handlers['push_card'] = function($client, $data) use ($callback){
 			$callback($client, $data['card']);
 		};
 	}
@@ -156,6 +175,31 @@ class Server {
 		}
 		return null;
 	}
+
+	public function setTOS($tos){
+	    $this->tos = $tos;
+    }
+
+    public function switchDirection(){
+	    if($this->direction == 'right'){
+	        $this->direction = 'left';
+        }
+	    else {
+	        $this->direction = 'right';
+        }
+    }
+
+    public function getCardAccum(){
+	    return $this->card_accum;
+    }
+
+    public function resetCardAccum(){
+	    $this->card_accum = 0;
+    }
+
+    public function increaseCardAccum($amount){
+        $this->card_accum += $amount;
+    }
 	
 	private function getClientBySocket($searched){
 		foreach($this->clients as $client){
@@ -206,10 +250,18 @@ class Server {
 
 	private function rotateArray($arr, $first_elem){
 	    $index = array_search($first_elem, $arr);
-	    for($i = 0; $i < $index; $i++){
-	        array_push($arr, array_shift($arr));
+	    return $this->rotateArrayBy($arr, $index);
+    }
+
+    private function rotateArrayBy($arr, $by){
+	    if($by < 0){
+	        $by = count($arr) + $by;
         }
-	    return $arr;
+
+        for($i = 0; $i < $by; $i++){
+            array_push($arr, array_shift($arr));
+        }
+        return $arr;
     }
 }
 ?>
