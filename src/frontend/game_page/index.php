@@ -20,9 +20,7 @@ if (!isset($_SESSION['visited'])) {
     <title>Uno with your Friends</title>
 </head>
 <body>
-<?php
 
-?>
 <div class="container" id="main">
     <div class="sector" id="sector_left">
 
