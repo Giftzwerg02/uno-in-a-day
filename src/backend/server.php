@@ -183,11 +183,11 @@ class Server {
     }
 
     public function getTOSConsumed(){
-	    return $this->tos;
+	    return $this->tos_consumed;
     }
 
-    public function setTOSConsumed($tos){
-	    $this->tos = $tos;
+    public function setTOSConsumed($tos_consumed){
+	    $this->tos_consumed = $tos_consumed;
     }
 
     public function switchDirection(){
