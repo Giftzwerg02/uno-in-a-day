@@ -15,7 +15,12 @@ $.getScript('./protocol.js', function() {
 
     protocol.events.on("update_tos", function(card) {
         addCardToTos(card);
-    })
+    });
+
+    protocol.events.on("game_start", function(players, card) {
+        addCardToTos(card);
+    });
+
 
     function addCardToPlayer(card) {
         let src = cardToSrc(card);
@@ -106,15 +111,32 @@ $.getScript('./protocol.js', function() {
         const tosCard = getCardIdFromImg(tos);
         const tosComponents = { "color": tosCard.split("/")[0], "name": tosCard.split("/")[1] };
         if(tosComponents.name === "block") {
-            return cardComponents.name === "block";
+            let canPlace = cardComponents.name === "block";
+            if(canPlace) {
+                return true;
+            } 
+            protocol.endTurn();
+            return false;
         }
 
         if(tosComponents.name === "plus_two") {
-            return cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
+            let canPlace = cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
+            if(canPlace) {
+                return true;
+            }
+            protocol.requestCard();
+            protocol.endTurn();
+            return false;
         }
 
         if(tosComponents.name === "plus_four") {
-            return cardComponents.name === "plus_four";
+            let canPlace = cardComponents.name === "plus_four";
+            if(canPlace) {
+                return true;
+            }
+            protocol.requestCard();
+            protocol.endTurn();
+            return false;
         }
 
         return (cardComponents.color === tosComponents.color || cardComponents.name === tosComponents.name || cardComponents.color === "black") && tosComponents.color !== "black";
