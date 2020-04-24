@@ -16,7 +16,9 @@ $.getScript('./protocol.js', function() {
     });
     const endTurnBtn = document.getElementById("end");
     endTurnBtn.addEventListener("click", function () {
-        protocol.endTurn();
+        if(!$("#end").prop("disabled")) { // only pressable if it is your turn!
+            protocol.endTurn();
+        }
     });
 
     protocol.events.on("game_start", function(players, card) {
@@ -27,13 +29,15 @@ $.getScript('./protocol.js', function() {
         current_player = player;
 
         let own_turn = player == protocol.own_player_name;
-        $("#end").prop('disabled', !own_turn);
+        $("#end").prop("disabled", !own_turn);
 
         if(own_turn){
             $("#deck_card").addClass("card:hover").removeClass("nofit");
+            $("#end").addClass("card:hover").removeClass("nofit");
         }
         else {
             $("#deck_card").removeClass("card:hover").addClass("nofit");
+            $("#end").removeClass("card:hover").addClass("nofit");
         }
 
         updateBlur();
