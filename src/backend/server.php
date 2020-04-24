@@ -11,9 +11,13 @@ class Server {
 	private $handlers;
 	
 	public function __construct(){
-		$this->server = new \HemiFrame\Lib\WebSocket\WebSocket("0.0.0.0", 1337);
-		
-		$this->server->on("receive", function($socket, $data) { 
+        try {
+            $this->server = new \HemiFrame\Lib\WebSocket\WebSocket("0.0.0.0", 1337);
+        } catch (Exception $e) {
+            error_log("Could not create websocket: " . $e->getMessage());
+        }
+
+        $this->server->on("receive", function($socket, $data) {
 			$this->onReceive($socket, $data);
 		});
 		
@@ -27,9 +31,13 @@ class Server {
 	public function start(){
 		$this->server->startServer();
 	}
+
+    public function sendErrorDirect($socket, $error){
+        $this->sendDirect($socket, "error", ["message" => $error]);
+    }
 	
 	public function sendError($client, $error){
-		$this->send($client->getName(), "error", ["message" => $error]);
+		$this->sendErrorDirect($client->getSocket(), $error);
 	}
 	
 	public function startGame($first_card){
@@ -40,33 +48,39 @@ class Server {
 		}
 		
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "game_start", ["names" => $names, "first_card" => $first_card]);
+
+		    $arr = $this->rotateArray($names, $client->getName());
+		    $index = array_search($client->getName(), $arr);
+		    unset($arr[$index]);
+		    $arr = array_values($arr);
+
+			$this->send($client, "game_start", ["names" => $arr, "first_card" => $first_card]);
 		}
 	}
 	
 	public function endGame($winner){
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "game_end", ["winner" => $winner]);
+			$this->send($client, "game_end", ["winner" => $winner]);
 		}
 	}
 	
 	public function giveCard($client, $card){
-		$this->send($client->getName(), "give_card", ["card" => $card]);
+		$this->send($client, "give_card", ["card" => $card]);
 	}
 	
 	public function updateUser($target_client){
-		$payload = ["name" => $user, "cards" => count($target_client->getCards())];
+		$payload = ["name" => $target_client->getCards(), "cards" => count($target_client->getCards())];
 		
 		foreach($this->clients as $client){
 			if($client != $target_client){
-				$this->sendDirect($client, "update_user", $payload);
+				$this->send($client, "update_user", $payload);
 			}
 		}
 	}
 	
 	public function updateCurrentUser($target_client){
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "update_current_user", ["name" => $target_client->getName()]);
+			$this->send($client, "update_current_user", ["name" => $target_client->getName()]);
 		}
 	}
 	
@@ -76,21 +90,23 @@ class Server {
 		unset($this->clients[$index]);
 		
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "disconnect_user", ["name" => $user]);
+			$this->send($client, "disconnect_user", ["name" => $client->getName()]);
 		}
 	}
 
+    public function disconnectSocket($socket){
+        $this->server->disconnectClient($socket);
+    }
+
 	public function updateTOS($card){
 		foreach($this->clients as $client){
-			$this->sendDirect($client, "update_tos", ["card" => $card]);
+			$this->send($client, "update_tos", ["card" => $card]);
 		}
 	}
 	
 	public function onSessionInit($callback){
 		$this->handlers['session_init'] = function($socket, $data) use ($callback){
-			$client = $callback($socket, $data['name']);
-			$clients = $this->getClients();
-			$this->clients[] = $client;
+			$callback($socket, $data['name']);
 		};
 	}
 	
@@ -127,6 +143,10 @@ class Server {
 	public function getClients(){
 		return $this->clients;
 	}
+
+	public function addClient($socket, $name){
+        $this->clients[] = new Client($socket, $name);
+    }
 	
 	public function getClientByName($searched){
 		foreach($this->clients as $client){
@@ -146,14 +166,13 @@ class Server {
 		return null;
 	}
 	
-	private function send($name, $type, $props){		
+	private function send($client, $type, $props){
 		// We assume you know what you're doing
-		$client = $this->getClientByName($name);
-		$this->sendDirect($client, $type, $props);
+		$socket = $client->getSocket();
+		$this->sendDirect($socket, $type, $props);
 	}
 	
-	private function sendDirect($client, $type, $props){
-		$socket = $client->getSocket();
+	private function sendDirect($socket, $type, $props){
 		$props['type'] = $type;
 		$payload = json_encode($props);
 		$this->server->sendData($socket, $payload);
@@ -165,9 +184,13 @@ class Server {
 		$client = $this->getClientBySocket($socket);
 		
 		// Small ugly hack for init_session
-		if($client == null){
+		if($arr['type'] == 'session_init'){
 			$client = $socket;
 		}
+		else if($client == null){
+		    $this->sendErrorDirect($socket, "internal_error_client_not_found");
+		    $this->disconnectSocket($socket);
+        }
 		
 		$type = $arr['type'];
 		$handler = $this->handlers[$type];
@@ -180,5 +203,13 @@ class Server {
 			$this->disconnectUser($client);
 		}
 	}
+
+	private function rotateArray($arr, $first_elem){
+	    $index = array_search($first_elem, $arr);
+	    for($i = 0; $i < $index; $i++){
+	        array_push($arr, array_shift($arr));
+        }
+	    return $arr;
+    }
 }
 ?>
