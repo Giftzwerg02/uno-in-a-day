@@ -4,6 +4,7 @@ class Client {
 	private $socket;
 	private $name;
 	private $cards;
+	private $saidUno;
 	
 	public function __construct($socket, $name){
 		$this->socket = $socket;
@@ -23,8 +24,17 @@ class Client {
 		return $this->socket;
 	}
 
+	public function setUno(){
+	    $this->saidUno = true;
+    }
+
+    public function isUnoPunishable(){
+	    return (!$this->saidUno) && (count($this->cards) == 1);
+    }
+
 	public function giveCard($card){
 	    $this->cards[] = $card;
+	    $this->saidUno = false;
     }
 
 	public function removeCard($card){
