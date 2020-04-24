@@ -1,7 +1,7 @@
 "use strict";
 $.getScript('./protocol.js', function() {
 
-    const protocol = new Protocol();
+    var protocol = new Protocol();
     const userHand = document.getElementById("user_hand");
     const tos = document.getElementById("tos");
     let colorButtons = Array.from(document.getElementsByClassName("color"));
@@ -9,20 +9,30 @@ $.getScript('./protocol.js', function() {
     const deckCard = document.getElementById("deck_card");
     deckCard.addEventListener("click", function() { protocol.requestCard()});
 
+    protocol.events.on("game_start", function(players, card) {
+        addCardToTos(card);
+    });
+
     protocol.events.on("give_card", function(card) {
         addCardToPlayer(card);
     });
 
     protocol.events.on("update_tos", function(card) {
         addCardToTos(card);
-    })
+    });
+
+    protocol.events.on("error", function(message) {
+        alert("Error: " + message);
+    });
+
+    protocol.connect();
 
     function addCardToPlayer(card) {
         let src = cardToSrc(card);
         let img = new Image();
         img.src = src;
         $(img).addClass("card");
-        if(!cardFitsOnTos(card)) {
+        if(!tos.src.endsWith("card_backside.png") && !cardFitsOnTos(card)) {
             $(img).removeClass("card:hover").addClass("nofit");
         }
         userHand.appendChild(img);
@@ -121,11 +131,11 @@ $.getScript('./protocol.js', function() {
 
     }
 
-    protocol.events.triggerHandler("update_tos", "blue/four");
-    protocol.events.triggerHandler("give_card", "blue/three");
-    protocol.events.triggerHandler("give_card", "red/three");
-    protocol.events.triggerHandler("give_card", "black/plus_four");
-    protocol.events.triggerHandler("give_card", "green/nine");
-    protocol.events.triggerHandler("give_card", "black/color_change");
+    /*protocol.events.triggerHandler("update_tos", ["blue/four"]);
+    protocol.events.triggerHandler("give_card", ["blue/three"]);
+    protocol.events.triggerHandler("give_card", ["red/three"]);
+    protocol.events.triggerHandler("give_card", ["black/plus_four"]);
+    protocol.events.triggerHandler("give_card", ["green/nine"]);
+    protocol.events.triggerHandler("give_card", ["black/color_change"]);*/
 
 });

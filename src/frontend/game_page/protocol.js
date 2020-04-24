@@ -100,12 +100,7 @@ class Protocol {
         }
     };
 
-    sendEvent(eventText, params) {
-        this.events.triggerHandler(eventText, params);
-    }
-
-
-    constructor() {
+    connect() {
         this.domain = window.location.hostname;
         this.connection = new WebSocket(`ws://${this.domain}:1337`, []);
 
@@ -118,9 +113,15 @@ class Protocol {
         this.connection.onmessage = function (event) {
             let json = JSON.parse(event.data);
             let type = json['type'];
+
             let args = protocol.preprocessors[type](json);
 
-            protocol.sendEvent(type, args);
+            protocol.events.triggerHandler(type, args);
+        }
+        
+        this.connection.onopen = function () {
+            let name = prompt("What's your name?");
+            protocol.sessionInit(name);
         }
     }
 }

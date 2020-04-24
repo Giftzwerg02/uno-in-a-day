@@ -1,5 +1,4 @@
 <?php
-require_once('server.php');
 
 class ProtocolAdapter {
 	const MINIMUM_PLAYER_THRESHOLD = 2;

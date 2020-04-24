@@ -1,5 +1,4 @@
 <?php
-    #require "../../backend/protocol.php";
     session_start();
 
 if (!isset($_SESSION['visited'])) {
@@ -44,7 +43,7 @@ if (!isset($_SESSION['visited'])) {
         <div class="sub_sector" id="stack_sector">
             <div class="cards" id="stack">
                 Hier Ablagestapel einfügen
-                <img id="tos" class="card" src=""/>
+                <img id="tos" class="card" src="../img_cards/card_backside.png"/>
             </div>
         </div>
         <div class="sub_sector" id="user_hand_sector">
