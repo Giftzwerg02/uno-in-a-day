@@ -72,7 +72,7 @@ if (!isset($_SESSION['visited'])) {
 
         <div class="uno_end">
             
-            <button id="end">End Turn!</button>
+            <img id="end" src="../img_buttons/end_turn.png"/>
             
             <button id="uno" hidden> Uno! </button>
 
