@@ -19,7 +19,7 @@ class ProtocolAdapter {
 			if(count($clients) >= self::MINIMUM_PLAYER_THRESHOLD){
 
 				// Start the game with a random card on stack
-				$card = Cards::getInstance()->getRandomCard();
+				$card = Cards::getInstance()->getRandomStartingCard();
 				$server->setTOS($card);
 				$server->startGame($card);
 				
