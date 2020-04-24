@@ -2,10 +2,6 @@
 
 use HemiFrame\Lib\WebSocket\WebSocket;
 
-require_once('..\vendor\HemiFrame\Lib\WebSockets\WebSocket.php'); // Not sure if needed
-require_once('..\vendor\HemiFrame\Lib\WebSockets\Client.php');
-require_once('client.php');
-
 class Server {
 	
 	public $server;
@@ -19,7 +15,9 @@ class Server {
         try {
             $this->server = new WebSocket("0.0.0.0", 1337);
         } catch (Exception $e) {
+            $this->server = null;
             error_log("Could not create websocket: " . $e->getMessage());
+            return;
         }
 
         $this->server->on("receive", function($socket, $data) {
@@ -36,7 +34,9 @@ class Server {
 	}
 	
 	public function start(){
-		$this->server->startServer();
+	    if($this->server != null){
+            $this->server->startServer();
+        }
 	}
 
     public function sendErrorDirect($socket, $error){

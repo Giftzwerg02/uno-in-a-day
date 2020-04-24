@@ -1,9 +1,9 @@
 <?php
-require_once('server.php');
 
 class ProtocolAdapter {
 	const MINIMUM_PLAYER_THRESHOLD = 2;
 	const INITIAL_CARD_COUNT = 7;
+    const UNO_PUNISH_CARDS = 2;
 	
 	public function __construct($server){
 		$server->onSessionInit(function ($socket, $name) use ($server){
@@ -68,11 +68,15 @@ class ProtocolAdapter {
 		});
 		
 		$server->onUno(function ($client) use ($server){
-			
+            $client->setUno();
 		});
 		
 		$server->onNoU(function ($client) use ($server){
-			
+		    foreach ($server->clients as $user){
+		        if($user->isUnoPunishable()){
+		            $this->giveRandomCards($server, $user, self::UNO_PUNISH_CARDS);
+                }
+            }
 		});
 	}
 	
