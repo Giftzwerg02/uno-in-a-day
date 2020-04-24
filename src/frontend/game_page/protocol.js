@@ -1,6 +1,7 @@
 class Protocol {
     domain;
     connection;
+    own_player_name;
 
     //---------------------------
     // Event Preprocessors
@@ -142,6 +143,7 @@ class Protocol {
         this.connection.onopen = function () {
             let name = prompt("What's your name?");
             protocol.sessionInit(name);
+            protocol.own_player_name = name;
         }
     }
 }

@@ -2,13 +2,17 @@
 $.getScript('./protocol.js', function() {
 
     var protocol = new Protocol();
+    var current_player;
+
     const userHand = document.getElementById("user_hand");
     const tos = document.getElementById("tos");
     let colorButtons = Array.from(document.getElementsByClassName("color"));
     colorButtons.forEach(button => button.addEventListener("click", chooseColor));
     const deckCard = document.getElementById("deck_card");
     deckCard.addEventListener("click", function() {
-        protocol.requestCard();
+        if(current_player == protocol.own_player_name){
+            protocol.requestCard();
+        }
     });
     const endTurnBtn = document.getElementById("end");
     endTurnBtn.addEventListener("click", function () {
@@ -17,6 +21,22 @@ $.getScript('./protocol.js', function() {
 
     protocol.events.on("game_start", function(players, card) {
         addCardToTos(card);
+    });
+
+    protocol.events.on("update_current_user", function(player) {
+        current_player = player;
+
+        let own_turn = player == protocol.own_player_name;
+        $("#end").prop('disabled', !own_turn);
+
+        if(own_turn){
+            $("#deck_card").addClass("card:hover").removeClass("nofit");
+        }
+        else {
+            $("#deck_card").removeClass("card:hover").addClass("nofit");
+        }
+
+        updateBlur();
     });
 
     protocol.events.on("give_card", function(card) {
@@ -96,14 +116,7 @@ $.getScript('./protocol.js', function() {
     function addCardToTos(card) {
         let src = cardToSrc(card);
         tos.src = src;
-        Array.from(userHand.children).forEach(cardImg => {
-            if(cardFitsOnTos(getCardIdFromImg(cardImg))) {
-                $(cardImg).removeClass("nofit").addClass("card:hover");
-            } else {
-                $(cardImg).addClass("nofit").removeClass("card:hover");
-            }
-        });
-
+        updateBlur();
     }
 
     function cardToSrc(card) {
@@ -152,4 +165,14 @@ $.getScript('./protocol.js', function() {
 
     }
 
+    function updateBlur(){
+        let own_turn = current_player == protocol.own_player_name;
+        Array.from(userHand.children).forEach(cardImg => {
+            if(cardFitsOnTos(getCardIdFromImg(cardImg)) && own_turn) {
+                $(cardImg).removeClass("nofit").addClass("card:hover");
+            } else {
+                $(cardImg).addClass("nofit").removeClass("card:hover");
+            }
+        });
+    }
 });
