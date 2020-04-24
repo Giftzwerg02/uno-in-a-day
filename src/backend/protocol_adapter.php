@@ -52,6 +52,9 @@ class ProtocolAdapter {
                 case "switch":
 			        $server->switchDirection();
 			        break;
+                case "block":
+                    $server->setTOSConsumed(false);
+                    break;
                 case "plus_two":
                     $server->increaseCardAccum(2);
                     $server->setTOSConsumed(false);
