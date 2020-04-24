@@ -7,7 +7,13 @@ $.getScript('./protocol.js', function() {
     let colorButtons = Array.from(document.getElementsByClassName("color"));
     colorButtons.forEach(button => button.addEventListener("click", chooseColor));
     const deckCard = document.getElementById("deck_card");
-    deckCard.addEventListener("click", function() { protocol.requestCard()});
+    deckCard.addEventListener("click", function() {
+        protocol.requestCard();
+    });
+    const endTurnBtn = document.getElementById("end");
+    endTurnBtn.addEventListener("click", function () {
+        protocol.endTurn();
+    });
 
     protocol.events.on("game_start", function(players, card) {
         addCardToTos(card);
@@ -63,7 +69,6 @@ $.getScript('./protocol.js', function() {
                 } else {
                     protocol.pushCard(cardId);
                     userHand.removeChild(childTag);
-                    protocol.events.triggerHandler("update_tos", cardId);
                     break;
                 }
             }

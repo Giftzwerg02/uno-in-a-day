@@ -70,6 +70,14 @@ if (!isset($_SESSION['visited'])) {
             
         </div>
 
+        <div class="uno_end">
+            
+            <button id="end">End Turn!</button>
+            
+            <button id="uno" hidden> Uno! </button>
+
+        </div>
+
     </div>
 </div>
 </body>

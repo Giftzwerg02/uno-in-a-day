@@ -7,34 +7,49 @@ class Protocol {
     //---------------------------
     preprocessors = {
         "game_start": (data) => {
+            console.log(1);
+
             return [data['names'], data['first_card']];
         },
 
         "game_end": (data) => {
+            console.log(2);
+
             return [data['winner']];
         },
 
         "give_card": (data) => {
+            console.log(3);
+
             return [data['card']];
         },
 
         "update_user": (data) => {
+            console.log(4);
+
             return [data['name'], data['cards']];
         },
 
         "update_current_user": (data) => {
+            console.log(5);
+
             return [data['name']];
         },
 
         "disconnect_user": (data) => {
+            console.log(6);
+
             return [data['name']];
         },
 
         "update_tos": (data) => {
+            console.log(7);
             return [data['card']];
         },
 
         "error": (data) => {
+            console.log(8);
+
             return [data['message']];
         },
     };
@@ -95,8 +110,11 @@ class Protocol {
             if( _triggers[event] ) {
                 var i;
                 for( i in _triggers[event] ) {
-                    console.log(params);
-                    _triggers[event][i](...params);
+                    if(params instanceof String) {
+                        _triggers[event][i](params)
+                    } else {
+                        _triggers[event][i](...params);
+                    }
                 }
             }
         }
