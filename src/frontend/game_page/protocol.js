@@ -107,7 +107,7 @@ class Protocol {
         const protocol = this;
         
         this.connection.onerror = function (error) {
-            protocol.sendEvent('error', [error.message]);
+            protocol.events.triggerHandler('error', [error.message]);
         };
         
         this.connection.onmessage = function (event) {
