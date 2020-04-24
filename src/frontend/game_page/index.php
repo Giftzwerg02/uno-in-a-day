@@ -66,7 +66,9 @@ if (!isset($_SESSION['visited'])) {
     </div>
     <div class="sector" id="sector_right">
         <div class="cards" id="deck">
-            Deck
+            
+            <img id="deck_card" src="../img_cards/card_backside.png" alt="Deck">
+            
         </div>
 
     </div>

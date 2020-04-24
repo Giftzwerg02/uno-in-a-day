@@ -6,6 +6,8 @@ $.getScript('./protocol.js', function() {
     const tos = document.getElementById("tos");
     let colorButtons = Array.from(document.getElementsByClassName("color"));
     colorButtons.forEach(button => button.addEventListener("click", chooseColor));
+    const deckCard = document.getElementById("deck_card");
+    deckCard.addEventListener("click", function() { protocol.requestCard()});
 
     protocol.events.on("give_card", function(card) {
         addCardToPlayer(card);
