@@ -133,32 +133,15 @@ $.getScript('./protocol.js', function() {
         const tosCard = getCardIdFromImg(tos);
         const tosComponents = { "color": tosCard.split("/")[0], "name": tosCard.split("/")[1] };
         if(tosComponents.name === "block") {
-            let canPlace = cardComponents.name === "block";
-            if(canPlace) {
-                return true;
-            } 
-            protocol.endTurn();
-            return false;
+            return cardComponents.name === "block";
         }
 
         if(tosComponents.name === "plus_two") {
-            let canPlace = cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
-            if(canPlace) {
-                return true;
-            }
-            protocol.requestCard();
-            protocol.endTurn();
-            return false;
+            return cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
         }
 
         if(tosComponents.name === "plus_four") {
-            let canPlace = cardComponents.name === "plus_four";
-            if(canPlace) {
-                return true;
-            }
-            protocol.requestCard();
-            protocol.endTurn();
-            return false;
+            return cardComponents.name === "plus_four";
         }
 
         return (cardComponents.color === tosComponents.color || cardComponents.name === tosComponents.name || cardComponents.color === "black") && tosComponents.color !== "black";

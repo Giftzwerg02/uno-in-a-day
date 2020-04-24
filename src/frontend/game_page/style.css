@@ -135,3 +135,11 @@
     justify-content: space-evenly;
     align-items: center;
 }
+
+#end {
+    transition-duration: 0.5s;
+}
+
+#end:hover {
+    transform: scale(1.05) translateY(-10px);
+}
