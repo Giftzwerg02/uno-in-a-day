@@ -21,18 +21,11 @@ $.getScript('./protocol.js', function() {
         addCardToTos(card);
     });
 
-<<<<<<< HEAD
-    protocol.events.on("game_start", function(players, card) {
-        addCardToTos(card);
-    });
-
-=======
     protocol.events.on("error", function(message) {
         alert("Error: " + message);
     });
 
     protocol.connect();
->>>>>>> master
 
     function addCardToPlayer(card) {
         let src = cardToSrc(card);
