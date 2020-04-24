@@ -20,6 +20,7 @@ class ProtocolAdapter {
 
 				// Start the game with a random card on stack
 				$card = Cards::getInstance()->getRandomCard();
+				$server->setTOS($card);
 				$server->startGame($card);
 				
 				// Give everybody some cards
@@ -34,15 +35,36 @@ class ProtocolAdapter {
 		});
 		
 		$server->onRequestCard(function ($client) use ($server){
-			$this->giveRandomCards($server, $client);
+		    $amount = $server->getCardAccum();
+		    if($amount == 0){ $amount = 1;}
+
+			$this->giveRandomCards($server, $client, $amount);
+
+		    $server->resetCardAccum();
 		});
 		
 		$server->onPushCard(function ($client, $card) use ($server){
-			
+			$client->removeCard($card);
+			$server->setTOS($card);
+
+			$cards = Cards::getInstance();
+			switch($cards->getCardName($card)){
+                case "switch":
+			        $server->switchDirection();
+			        break;
+                case "plus_two":
+                    $server->increaseCardAccum(2);
+                    break;
+                case "plus_four":
+                    $server->increaseCardAccum(4);
+                    break;
+            }
 		});
 		
 		$server->onEndTurn(function ($client) use ($server){
-			
+		    $server->updateUser($client);
+		    $server->updateTOS();
+		    $server->updateToNextUser();
 		});
 		
 		$server->onUno(function ($client) use ($server){
@@ -58,6 +80,7 @@ class ProtocolAdapter {
 		for($i = 0; $i < $amount; $i++){
 			$card = Cards::getInstance()->getRandomCard();
 			$server->giveCard($client, $card);
+			$client->giveCard($card);
 		}
 	}
 }
