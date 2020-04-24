@@ -28,12 +28,14 @@ if (!isset($_SESSION['visited'])) {
 
             <?php
             $userArray = ['Johannes', 'Nick', 'Nikita', 'Hans', 'Benjamin', 'Patrick', 'Gustav'];
+            $cardCount = 0;
+            #$cardCount = getMethode();
             #$userArray = getClients();
                 for ($i=0; $i < count($userArray); $i++){
                     echo "<div class='sub_sector sub_sector_user' id='user_sector'>";
                     echo "<p class='username'>$userArray[$i]</p>";
                     #echo "<p class='username'>$userArray[$i].getName()</p>";
-                    echo "<p class='card_count'>Karten: 2</p>";
+                    echo "<p class='card_count'>Karten: $cardCount</p>";
                     echo "</div>";
                 }
             ?>
