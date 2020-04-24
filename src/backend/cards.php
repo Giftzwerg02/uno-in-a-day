@@ -27,6 +27,9 @@ class Cards {
         // ADDING COLOR-CARDS
         for ($color=0; $color < count($this->colored_card_colors); $color++) { 
                 
+            $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->black_card_names[0];
+            $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->black_card_names[1];
+
             for ($name=0; $name < count($this->colored_card_names); $name++) { 
                 
                 $this->card_ids[] = $this->colored_card_colors[$color] . "/" . $this->colored_card_names[$name];
