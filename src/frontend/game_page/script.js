@@ -8,6 +8,7 @@ $.getScript('./protocol.js', function() {
     var current_player;
     var hasChosenCard = false;
     var hasTakenCard = false;
+    var hasBeenConsumed;
     const userHand = document.getElementById("user_hand");
     const tos = document.getElementById("tos");
     let colorButtons = Array.from(document.getElementsByClassName("color"));
@@ -56,8 +57,9 @@ $.getScript('./protocol.js', function() {
         addCardToPlayer(card);
     });
 
-    protocol.events.on("update_tos", function(card) {
+    protocol.events.on("update_tos", function(card, consumed) {
         addCardToTos(card);
+        hasBeenConsumed = consumed;
     });
 
     protocol.events.on("error", function(message) {
@@ -151,16 +153,18 @@ $.getScript('./protocol.js', function() {
         const cardComponents = { "color": card.split("/")[0], "name": card.split("/")[1] };
         const tosCard = getCardIdFromImg(tos);
         const tosComponents = { "color": tosCard.split("/")[0], "name": tosCard.split("/")[1] };
-        if(tosComponents.name === "block") {
-            return cardComponents.name === "block";
-        }
+        if(!hasBeenConsumed) {
+            if(tosComponents.name === "block") {
+                return cardComponents.name === "block";
+            }
 
-        if(tosComponents.name === "plus_two") {
-            return cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
-        }
+            if(tosComponents.name === "plus_two") {
+                return cardComponents.name === "plus_two" || cardComponents.name === "plus_four";
+            }
 
-        if(tosComponents.name === "plus_four") {
-            return cardComponents.name === "plus_four";
+            if(tosComponents.name === "plus_four") {
+                return cardComponents.name === "plus_four";
+            }
         }
 
         return (cardComponents.color === tosComponents.color || cardComponents.name === tosComponents.name || cardComponents.color === "black") && tosComponents.color !== "black";
